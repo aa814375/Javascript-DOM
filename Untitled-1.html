@@ -1,269 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>JavaScript DOM Practice</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Practice Exercises 1–5</title>
   <style>
-    body {
-      font-family: "Segoe UI", Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(to right, #0077b6, #90e0ef);
-      color: #023047;
-    }
+    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif; }
+    body { margin: 0; background:#0f172a; color:#e2e8f0; }
+    header { position: sticky; top:0; z-index:10; backdrop-filter: blur(8px); background:rgba(15,23,42,0.7); border-bottom: 1px solid #334155; }
+    nav { display:flex; gap:.75rem; flex-wrap: wrap; padding: .75rem 1rem; }
+    nav a { text-decoration:none; color:#e2e8f0; background:#1f2937; padding:.5rem .75rem; border-radius:12px; border:1px solid #334155; }
+    nav a:hover{ background:#111827; }
+    main { max-width: 960px; margin: 2rem auto; padding: 0 1rem 4rem; display: grid; gap: 2rem; }
+    section { background:#0b1222; border:1px solid #334155; border-radius:16px; padding:1.25rem; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+    h2 { margin-top:0; font-size:1.15rem; letter-spacing:.2px; }
+    .card { background:#111827; border-radius:12px; padding:1rem; border:1px solid #334155; }
+    button { cursor:pointer; border:none; padding:.6rem .9rem; border-radius:10px; background:#334155; color:#e2e8f0; font-weight:600; }
+    button:hover{ filter:brightness(1.1) }
+    .muted { color:#94a3b8; font-size:.95rem; }
+    .row { display:flex; gap:.75rem; flex-wrap:wrap; align-items:center; }
+    .grid { display:grid; gap: .75rem; }
+    .pill { display:inline-block; padding: .15rem .5rem; border:1px solid #334155; border-radius:999px; font-size:.8rem; color:#94a3b8; }
+    .divider { height:1px; background:#334155; margin: .75rem 0 1rem; }
 
-    header {
-      text-align: center;
-      padding: 30px 10px;
-      color: white;
-      background: #023e8a;
-    }
+    /* Exercise 2 */
+    .color-btn.active { background:#16a34a; }
 
-    section {
-      background: white;
-      margin: 25px auto;
-      padding: 25px;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 700px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: transform 0.2s ease;
-    }
-
-    section:hover {
-      transform: scale(1.02);
-    }
-
-    h2 {
-      color: #0077b6;
-      border-bottom: 2px solid #90e0ef;
-      padding-bottom: 8px;
-    }
-
-    button {
-      background-color: #0077b6;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 8px 15px;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: background-color 0.2s;
-    }
-
-    button:hover {
-      background-color: #023e8a;
-    }
-
-    #display {
-      width: 220px;
-      height: 35px;
-      margin-bottom: 10px;
-      text-align: right;
-      padding: 5px;
-      border: 2px solid #0077b6;
-      border-radius: 6px;
-      font-size: 18px;
-      background-color: #caf0f8;
-    }
-
-    .calc-btn {
-      width: 45px;
-      height: 45px;
-      margin: 3px;
-      font-size: 18px;
-      border-radius: 6px;
-      background-color: #0096c7;
-    }
-
-    .calc-btn:hover {
-      background-color: #023e8a;
-    }
-
-    .answer {
-      display: none;
-      margin-left: 10px;
-      margin-top: 5px;
-      padding: 8px;
-      border-left: 3px solid #0077b6;
-      background-color: #e0f7fa;
-      border-radius: 5px;
-    }
-
-    .question {
-      cursor: pointer;
-      font-weight: bold;
-      color: #0077b6;
-      margin-top: 10px;
-    }
-
-    footer {
-      text-align: center;
-      color: white;
-      padding: 20px;
-      background: #023e8a;
-      margin-top: 40px;
-    }
-
-    .fade {
-      animation: fadeIn 0.5s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
+    /* Exercise 5 */
+    .faq-item { border:1px solid #334155; border-radius:12px; overflow:hidden; }
+    .faq-q { background:#0f172a; padding:.9rem 1rem; font-weight:600; display:flex; justify-content:space-between; align-items:center; }
+    .faq-a { padding:0 1rem; max-height:0; overflow:hidden; transition:max-height .25s ease, padding .25s ease; background:#0b1222; }
+    .faq-item.open .faq-a { padding: .9rem 1rem 1rem; max-height: 200px; }
+    .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: .85rem; background:#0b1222; border:1px solid #334155; padding:.15rem .4rem; border-radius:6px; }
   </style>
 </head>
 <body>
-
   <header>
-    <h1>JavaScript DOM Practice Page</h1>
-    <p>Explore, click, and experiment with DOM features!</p>
-    <p id="currentTime"></p>
+    <nav>
+      <a href="#ex1">Exercise 1</a>
+      <a href="#ex2">Exercise 2</a>
+      <a href="#ex3">Exercise 3</a>
+      <a href="#ex4">Exercise 4</a>
+      <a href="#ex5">Exercise 5</a>
+    </nav>
   </header>
 
-  <!-- Exercise 1 -->
-  <section>
-    <h2>1. Selecting Elements</h2>
-    <h3 id="main-title">Welcome to My Page</h3>
-    <p class="intro">This paragraph is for testing DOM selection.</p>
-    <button id="showText">Show Text in Console</button>
-  </section>
+  <main>
+    <!-- Exercise 1 -->
+    <section id="ex1">
+      <h2>Practice Exercise 1 — Select by ID and Class</h2>
+      <p class="muted">Create an HTML file with a heading <span class="kbd">id="main-title"</span> and a paragraph <span class="kbd">class="intro"</span>. Select both with JavaScript.</p>
+      <div class="divider"></div>
 
-  <!-- Exercise 2 -->
-  <section>
-    <h2>2. Button Color Change</h2>
-    <p>Click the button to toggle its color.</p>
-    <button id="colorBtn">Click Me</button>
-  </section>
+      <h1 id="main-title">Welcome to DOM Selection</h1>
+      <p class="intro">This paragraph has the class <em>intro</em>. Click the button to highlight the selected elements and log them to the console.</p>
 
-  <!-- Exercise 3 -->
-  <section>
-    <h2>3. Add List Item</h2>
-    <ul id="itemList">
-      <li>Item 1</li>
-    </ul>
-    <button id="addBtn">Add Item</button>
-    <button id="clearBtn">Clear All</button>
-  </section>
+      <div class="row">
+        <button id="select-btn">Select & Highlight</button>
+        <span class="pill">Opens DevTools console output</span>
+      </div>
+    </section>
 
-  <!-- Exercise 4 -->
-  <section>
-    <h2>4. Simple Calculator</h2>
-    <div id="display"></div>
-    <div>
-      <button class="calc-btn">1</button>
-      <button class="calc-btn">2</button>
-      <button class="calc-btn">3</button>
-      <button class="calc-btn">+</button><br>
-      <button class="calc-btn">4</button>
-      <button class="calc-btn">5</button>
-      <button class="calc-btn">6</button>
-      <button class="calc-btn">-</button><br>
-      <button class="calc-btn">7</button>
-      <button class="calc-btn">8</button>
-      <button class="calc-btn">9</button>
-      <button class="calc-btn">*</button><br>
-      <button class="calc-btn">0</button>
-      <button class="calc-btn">/</button>
-      <button class="calc-btn">=</button>
-      <button class="calc-btn">C</button>
-    </div>
-  </section>
+    <!-- Exercise 2 -->
+    <section id="ex2">
+      <h2>Practice Exercise 2 — Button Changes Color on Click</h2>
+      <p class="muted">Click the button to toggle its color/state.</p>
+      <div class="divider"></div>
 
-  <!-- Exercise 5 -->
-  <section>
-    <h2>5. FAQ Section</h2>
-    <div class="faq">
-      <div class="question">What is JavaScript?</div>
-      <div class="answer">JavaScript is a programming language used to make web pages interactive.</div>
+      <button id="color-button" class="color-btn">Click me to change color</button>
+    </section>
 
-      <div class="question">What is DOM?</div>
-      <div class="answer">DOM stands for Document Object Model — it represents a web page's structure.</div>
+    <!-- Exercise 3 -->
+    <section id="ex3">
+      <h2>Practice Exercise 3 — Add Items to a List</h2>
+      <p class="muted">Use <span class="kbd">document.createElement</span> to append new <span class="kbd">&lt;li&gt;</span> elements.</p>
+      <div class="divider"></div>
 
-      <div class="question">What is an Event?</div>
-      <div class="answer">An event is an action like a click, hover, or key press that triggers JavaScript code.</div>
-    </div>
-  </section>
+      <div class="grid">
+        <ul id="todo-list" class="card">
+          <li>Learn HTML</li>
+          <li>Learn CSS</li>
+        </ul>
+        <div class="row">
+          <input id="new-item" placeholder="New item..." />
+          <button id="add-item">Add Item</button>
+          <span class="pill">Press Enter to add</span>
+        </div>
+      </div>
+    </section>
 
-  <footer>
-    <p>Created by: Bbspo | Updated DOM Version</p>
-  </footer>
+    <!-- Exercise 4 -->
+    <section id="ex4">
+      <h2>Practice Exercise 4 — Simple Calculator</h2>
+      <p class="muted">A minimal calculator for +, −, ×, ÷ that updates a display.</p>
+      <div class="divider"></div>
+
+      <div class="card" style="max-width:360px">
+        <div id="calc-display" style="text-align:right;font-size:2rem;padding:.5rem .75rem;background:#0b1222;border-radius:10px;border:1px solid #334155;">0</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-top:.75rem;">
+          <button class="calc-key" data-key="7">7</button>
+          <button class="calc-key" data-key="8">8</button>
+          <button class="calc-key" data-key="9">9</button>
+          <button class="calc-op" data-op="/">÷</button>
+
+          <button class="calc-key" data-key="4">4</button>
+          <button class="calc-key" data-key="5">5</button>
+          <button class="calc-key" data-key="6">6</button>
+          <button class="calc-op" data-op="*">×</button>
+
+          <button class="calc-key" data-key="1">1</button>
+          <button class="calc-key" data-key="2">2</button>
+          <button class="calc-key" data-key="3">3</button>
+          <button class="calc-op" data-op="-">−</button>
+
+          <button class="calc-key" data-key="0">0</button>
+          <button id="clear">C</button>
+          <button id="equals">=</button>
+          <button class="calc-op" data-op="+">+</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Exercise 5 -->
+    <section id="ex5">
+      <h2>Practice Exercise 5 — FAQ Accordion (One Open at a Time)</h2>
+      <p class="muted">Click a question to toggle its answer. Opening one closes the others.</p>
+      <div class="divider"></div>
+
+      <div class="grid">
+        <div class="faq-item">
+          <div class="faq-q">What is DOM?<span>+</span></div>
+          <div class="faq-a">The Document Object Model (DOM) is a programming interface for web documents.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How do I add an element?<span>+</span></div>
+          <div class="faq-a">Use <code>document.createElement()</code> then <code>appendChild()</code> or <code>append()</code>.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">What is an event listener?<span>+</span></div>
+          <div class="faq-a">A function that runs in response to user actions like clicks or key presses.</div>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <script>
-    // Show current time dynamically
-    const timeElement = document.getElementById("currentTime");
-    function updateTime() {
-      const now = new Date();
-      timeElement.textContent = "Current Time: " + now.toLocaleTimeString();
-    }
-    setInterval(updateTime, 1000);
-    updateTime();
+    // ========= Exercise 1 =========
+    const selectBtn = document.getElementById('select-btn');
+    selectBtn.addEventListener('click', () => {
+      const title = document.getElementById('main-title');
+      const intro = document.querySelector('.intro');
 
-    // Exercise 1
-    const title = document.getElementById("main-title");
-    const intro = document.querySelector(".intro");
-    document.getElementById("showText").addEventListener("click", function() {
-      console.log("Title:", title.textContent);
-      console.log("Intro:", intro.textContent);
-      alert("Texts logged in console!");
-    });
-
-    // Exercise 2
-    const colorBtn = document.getElementById("colorBtn");
-    colorBtn.addEventListener("click", function() {
-      colorBtn.style.backgroundColor =
-        colorBtn.style.backgroundColor === "lightblue" ? "#0096c7" : "lightblue";
-    });
-
-    // Exercise 3
-    const addBtn = document.getElementById("addBtn");
-    const clearBtn = document.getElementById("clearBtn");
-    const list = document.getElementById("itemList");
-
-    addBtn.addEventListener("click", function() {
-      const newItem = document.createElement("li");
-      newItem.textContent = "New Item " + (list.children.length + 1);
-      newItem.classList.add("fade");
-      list.appendChild(newItem);
-    });
-
-    clearBtn.addEventListener("click", function() {
-      list.innerHTML = "";
-    });
-
-    // Exercise 4 - Calculator
-    const display = document.getElementById("display");
-    const buttons = document.querySelectorAll(".calc-btn");
-    let currentInput = "";
-
-    buttons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const value = btn.textContent;
-
-        if (value === "C") currentInput = "";
-        else if (value === "=") {
-          try { currentInput = eval(currentInput); }
-          catch { currentInput = "Error"; }
-        } else currentInput += value;
-
-        display.textContent = currentInput;
+      // Visual feedback: highlight selected nodes
+      [title, intro].forEach(el => {
+        el.style.outline = '2px solid #22d3ee';
+        el.style.outlineOffset = '4px';
       });
+
+      console.clear();
+      console.log('Selected by ID:', title);
+      console.log('Selected by class:', intro);
     });
 
-    // Exercise 5 - FAQ
-    const questions = document.querySelectorAll(".question");
-    questions.forEach(q => {
-      q.addEventListener("click", () => {
-        document.querySelectorAll(".answer").forEach(a => a.style.display = "none");
-        const answer = q.nextElementSibling;
-        answer.style.display = "block";
-        answer.classList.add("fade");
+    // ========= Exercise 2 =========
+    const colorButton = document.getElementById('color-button');
+    colorButton.addEventListener('click', () => {
+      colorButton.classList.toggle('active');
+      colorButton.textContent = colorButton.classList.contains('active')
+        ? 'Clicked! (click to reset)'
+        : 'Click me to change color';
+    });
+
+    // ========= Exercise 3 =========
+    const list = document.getElementById('todo-list');
+    const newItemInput = document.getElementById('new-item');
+    const addItemBtn = document.getElementById('add-item');
+
+    function addItem() {
+      const text = newItemInput.value.trim();
+      if (!text) return;
+      const li = document.createElement('li');
+      li.textContent = text;
+      list.appendChild(li);
+      newItemInput.value = '';
+      newItemInput.focus();
+    }
+
+    addItemBtn.addEventListener('click', addItem);
+    newItemInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') addItem();
+    });
+
+    // ========= Exercise 4 =========
+    let current = '0';
+    let op = null;
+    let stored = null;
+    const display = document.getElementById('calc-display');
+
+    function updateDisplay() { display.textContent = current; }
+
+    function inputDigit(d) {
+      if (current === '0') current = d; else current += d;
+      updateDisplay();
+    }
+
+    function setOp(nextOp) {
+      if (stored === null) { stored = parseFloat(current); }
+      else if (op) { stored = compute(stored, parseFloat(current), op); }
+      op = nextOp;
+      current = '0';
+      updateDisplay();
+    }
+
+    function compute(a, b, operator) {
+      switch (operator) {
+        case '+': return a + b;
+        case '-': return a - b;
+        case '*': return a * b;
+        case '/': return b === 0 ? NaN : a / b;
+      }
+    }
+
+    function equals() {
+      if (op === null || stored === null) return;
+      const result = compute(stored, parseFloat(current), op);
+      current = String(result);
+      stored = null; op = null;
+      updateDisplay();
+    }
+
+    function clearAll() { current = '0'; stored = null; op = null; updateDisplay(); }
+
+    document.querySelectorAll('.calc-key').forEach(btn => {
+      btn.addEventListener('click', () => inputDigit(btn.dataset.key));
+    });
+    document.querySelectorAll('.calc-op').forEach(btn => {
+      btn.addEventListener('click', () => setOp(btn.dataset.op));
+    });
+    document.getElementById('equals').addEventListener('click', equals);
+    document.getElementById('clear').addEventListener('click', clearAll);
+
+    // ========= Exercise 5 =========
+    const faqItems = Array.from(document.querySelectorAll('.faq-item'));
+    faqItems.forEach(item => {
+      const q = item.querySelector('.faq-q');
+      q.addEventListener('click', () => {
+        faqItems.forEach(i => { if (i !== item) i.classList.remove('open'); });
+        item.classList.toggle('open');
       });
     });
   </script>
-
 </body>
 </html>
